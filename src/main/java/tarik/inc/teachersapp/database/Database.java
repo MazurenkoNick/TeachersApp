@@ -229,4 +229,14 @@ public class Database {
         return list;
     }
 
+    public List<RowDTO> SearchByPrognostication(KPIAward award) {
+        List<RowDTO> list = new ArrayList<RowDTO>();
+        for (var i : data) {
+            if (i.getPrognostication().equals((award))) {
+                list.add(i);
+            }
+        }
+        return list;
+    }
+
 }
