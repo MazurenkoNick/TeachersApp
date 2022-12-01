@@ -21,4 +21,13 @@ public enum StateAward {
     public String getName() {
         return this.name;
     }
+
+    public static StateAward fromString(String text) {
+        for (StateAward award : allValues) {
+            if (award.name.equalsIgnoreCase(text)) {
+                return award;
+            }
+        }
+        return null;
+    }
 }

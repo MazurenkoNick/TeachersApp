@@ -7,10 +7,7 @@ import tarik.inc.teachersapp.dto.StateAward;
 
 import java.time.Year;
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.IntFunction;
-import java.util.function.Predicate;
-import java.util.function.UnaryOperator;
+import java.util.function.*;
 import java.util.stream.Stream;
 
 public class Database {
@@ -148,6 +145,20 @@ public class Database {
 
     public void forEach(Consumer<? super RowDTO> action) {
         data.forEach(action);
+    }
+
+    public RowDTO findRowDTO(String name, Faculty faculty,
+                             KPIAward kpiAward, StateAward stateAward,
+                             String protocolNum, Year kpiDiplomaYear, Year stateDiplomaYear) {
+        return data.stream()
+                .filter(rowDTO -> rowDTO.getName().equals(name))
+                .filter(rowDTO -> rowDTO.getFaculty().equals(faculty))
+                .filter(rowDTO -> rowDTO.getKpiDiploma().equals(kpiAward))
+                .filter(rowDTO -> rowDTO.getStateDiploma().equals(stateAward))
+                .filter(rowDTO -> rowDTO.getProtocolNum().equals(protocolNum))
+                .filter(rowDTO -> rowDTO.getKpiDiplomaYear().equals(kpiDiplomaYear))
+                .filter(rowDTO -> rowDTO.getStateDiplomaYear().equals(stateDiplomaYear))
+                .findFirst().orElse(RowDTO.EMPTY);
     }
 
     public RowDTO SearchByID(Integer id) {

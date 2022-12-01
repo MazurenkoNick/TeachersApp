@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import tarik.inc.teachersapp.database.Database;
 import tarik.inc.teachersapp.dto.Faculty;
 import tarik.inc.teachersapp.dto.KPIAward;
 import tarik.inc.teachersapp.dto.StateAward;
@@ -16,17 +17,23 @@ import java.util.*;
 public class ScenesController implements Initializable {
 
     @FXML
-    ComboBox<String> dropBoxOfFaculties = new ComboBox<>();
+    private ComboBox<String> dropBoxOfFaculties = new ComboBox<>();
     @FXML
-    ComboBox<String> dropBoxOfKpiAwards = new ComboBox<>();
+    private ComboBox<String> dropBoxOfKpiAwards = new ComboBox<>();
     @FXML
-    ComboBox<String> dropBoxOfStateAwards = new ComboBox<>();
+    private ComboBox<String> dropBoxOfStateAwards = new ComboBox<>();
     @FXML
-    ComboBox<String> dropBoxOfPrognostication = new ComboBox<>();
-    @FXML TextField textFieldOfFullName;
-    @FXML TextField textFieldOfProtocol;
-    @FXML TextField textFieldOfKpiAwardYear;
-    @FXML TextField textFieldOfStateAwardYear;
+    private ComboBox<String> dropBoxOfPrognostication = new ComboBox<>();
+    @FXML private TextField textFieldOfFullName;
+    @FXML private TextField textFieldOfProtocol;
+    @FXML private TextField textFieldOfKpiAwardYear;
+    @FXML private TextField textFieldOfStateAwardYear;
+
+    private final Database database;
+
+    public ScenesController() {
+        this.database = Database.getInstance();
+    }
 
     public void setPrognosticationValues(ActionEvent event) {
         dropBoxOfPrognostication.getItems().clear();

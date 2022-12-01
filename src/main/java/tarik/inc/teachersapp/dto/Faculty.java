@@ -37,5 +37,13 @@ public enum Faculty {
         return this.name;
     }
 
+    public static Faculty fromString(String text) {
+        for (Faculty faculty : allValues) {
+            if (faculty.name.equalsIgnoreCase(text)) {
+                return faculty;
+            }
+        }
+        return null;
+    }
 
 }

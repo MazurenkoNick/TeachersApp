@@ -31,5 +31,14 @@ public enum KPIAward {
             return allValues[nextId].getName();
         return " - ";
     }
+
+    public static KPIAward fromString(String text) {
+        for (KPIAward award : allValues) {
+            if (award.name.equalsIgnoreCase(text)) {
+                return award;
+            }
+        }
+        return null;
+    }
 }
 
