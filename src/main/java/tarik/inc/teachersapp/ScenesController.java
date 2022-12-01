@@ -38,6 +38,7 @@ public class ScenesController implements Initializable {
                 .orElseThrow(NoSuchElementException::new);
 
         dropBoxOfPrognostication.getItems().add(award.next());
+        dropBoxOfPrognostication.getSelectionModel().selectFirst();
     }
 
     @Override
