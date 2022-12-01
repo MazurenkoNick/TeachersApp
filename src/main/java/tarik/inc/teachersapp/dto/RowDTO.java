@@ -23,9 +23,9 @@ public class RowDTO {
     @JsonProperty("FACULTY")
     private Faculty faculty;
     @JsonProperty("KPI DIPLOMA")
-    private String kpiDiploma;
+    private KPIAward kpiDiploma;
     @JsonProperty("STATE DIPLOMA")
-    private String stateDiploma;
+    private StateAward stateDiploma;
     @JsonProperty("PROTOCOL NUMBER")
     private String protocolNum;
     @JsonProperty("KPI DIPLOMA YEAR")
