@@ -27,6 +27,7 @@ public enum Faculty {
 
 
     private final String name;
+    public static final Faculty[] allValues = values();
 
     Faculty(String name) {
         this.name = name;
