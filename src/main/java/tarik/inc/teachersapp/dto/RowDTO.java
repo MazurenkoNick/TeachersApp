@@ -32,6 +32,8 @@ public class RowDTO {
     private Year kpiDiplomaYear;
     @JsonProperty("STATE DIPLOMA YEAR")
     private Year stateDiplomaYear;
+    @JsonProperty("PROGNOSTICATION")
+    private KPIAward prognostication;
 
     public boolean isNotEmpty() {
         return this != EMPTY;
