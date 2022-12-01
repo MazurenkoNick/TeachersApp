@@ -1,7 +1,11 @@
 package tarik.inc.teachersapp.database;
 
+import tarik.inc.teachersapp.dto.Faculty;
+import tarik.inc.teachersapp.dto.KPIAward;
 import tarik.inc.teachersapp.dto.RowDTO;
+import tarik.inc.teachersapp.dto.StateAward;
 
+import java.time.Year;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.IntFunction;
@@ -145,4 +149,84 @@ public class Database {
     public void forEach(Consumer<? super RowDTO> action) {
         data.forEach(action);
     }
+
+    public RowDTO SearchByID(Integer id) {
+        for (var i : data) {
+            if (i.getId().equals(id)) {
+                return i;
+            }
+        }
+        return null;
+    }
+
+    public List<RowDTO> SearchByName(String name) {
+        List<RowDTO> list = new ArrayList<RowDTO>();
+        for (var i : data) {
+            if (i.getName().equals((name))) {
+                list.add(i);
+            }
+        }
+        return list;
+    }
+
+    public List<RowDTO> SearchByFaculty(Faculty faculty) {
+        List<RowDTO> list = new ArrayList<RowDTO>();
+        for (var i : data) {
+            if (i.getFaculty().equals((faculty))) {
+                list.add(i);
+            }
+        }
+        return list;
+    }
+
+    public List<RowDTO> SearchByKPIDiploma(KPIAward award) {
+        List<RowDTO> list = new ArrayList<RowDTO>();
+        for (var i : data) {
+            if (i.getKpiDiploma().equals((award))) {
+                list.add(i);
+            }
+        }
+        return list;
+    }
+
+    public List<RowDTO> SearchByStateDiploma(StateAward award) {
+        List<RowDTO> list = new ArrayList<RowDTO>();
+        for (var i : data) {
+            if (i.getStateDiploma().equals((award))) {
+                list.add(i);
+            }
+        }
+        return list;
+    }
+
+    public List<RowDTO> SearchByProtocolNum(String num) {
+        List<RowDTO> list = new ArrayList<RowDTO>();
+        for (var i : data) {
+            if (i.getProtocolNum().equals((num))) {
+                list.add(i);
+            }
+        }
+        return list;
+    }
+
+    public List<RowDTO> SearchByKPIDiplomaYear(Year year) {
+        List<RowDTO> list = new ArrayList<RowDTO>();
+        for (var i : data) {
+            if (i.getKpiDiplomaYear().equals((year))) {
+                list.add(i);
+            }
+        }
+        return list;
+    }
+
+    public List<RowDTO> SearchByStateDiplomaYear(Year year) {
+        List<RowDTO> list = new ArrayList<RowDTO>();
+        for (var i : data) {
+            if (i.getStateDiplomaYear().equals((year))) {
+                list.add(i);
+            }
+        }
+        return list;
+    }
+
 }
