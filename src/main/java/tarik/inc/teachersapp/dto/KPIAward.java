@@ -1,6 +1,7 @@
 package tarik.inc.teachersapp.dto;
 
 public enum KPIAward {
+    NONE(" - "),
     GVchenRada("Грамота Вченої ради"),
     PGVchenRada("Почесна грамота Вченої ради"),
     PVVchenRada("Почесна відзнака Вченої ради"),
@@ -14,6 +15,7 @@ public enum KPIAward {
     PVZaslPeredKPI("Почесна відзнака 'За заслуги перед КПІ'");
 
     private final String name;
+    public static final KPIAward[] allValues = values();
 
     KPIAward(String name) {
         this.name = name;
@@ -21,6 +23,13 @@ public enum KPIAward {
 
     public String getName() {
         return this.name;
+    }
+
+    public String next() {
+        int nextId = this.ordinal() + 1;
+        if (nextId < allValues.length)
+            return allValues[nextId].getName();
+        return " - ";
     }
 }
 

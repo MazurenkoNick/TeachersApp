@@ -1,6 +1,7 @@
 package tarik.inc.teachersapp.dto;
 
 public enum StateAward {
+    NONE(" - "),
     PodyakaMON("Подяка МОН України"),
     GramotaMON("Грамота МОН України"),
     PochGramotaMON("Почесна грамота МОН України"),
@@ -10,6 +11,8 @@ public enum StateAward {
     GramotaKM("Грамота КМ України");
 
     private final String name;
+    public static final StateAward[] allValues = values();
+
 
     StateAward(String name) {
         this.name = name;
