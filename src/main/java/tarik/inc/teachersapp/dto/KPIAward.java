@@ -1,5 +1,7 @@
 package tarik.inc.teachersapp.dto;
 
+import java.util.Optional;
+
 public enum KPIAward {
     NONE(" - "),
     GVchenRada("Грамота Вченої ради"),
@@ -25,11 +27,11 @@ public enum KPIAward {
         return this.name;
     }
 
-    public String next() {
+    public Optional<KPIAward> next() {
         int nextId = this.ordinal() + 1;
         if (nextId < allValues.length)
-            return allValues[nextId].getName();
-        return " - ";
+            return Optional.of(allValues[nextId]);
+        return Optional.empty();
     }
 
     public static KPIAward fromString(String text) {

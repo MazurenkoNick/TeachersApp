@@ -147,6 +147,14 @@ public class Database {
         data.forEach(action);
     }
 
+    public boolean rowExists(String name, Faculty faculty,
+                          KPIAward kpiAward, StateAward stateAward,
+                          String protocolNum, Year kpiDiplomaYear, Year stateDiplomaYear) {
+
+        return !findRowDTO(name, faculty, kpiAward, stateAward,
+                           protocolNum, kpiDiplomaYear, stateDiplomaYear).equals(RowDTO.EMPTY);
+    }
+
     public RowDTO findRowDTO(String name, Faculty faculty,
                              KPIAward kpiAward, StateAward stateAward,
                              String protocolNum, Year kpiDiplomaYear, Year stateDiplomaYear) {
