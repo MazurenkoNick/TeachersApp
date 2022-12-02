@@ -1,13 +1,11 @@
-package tarik.inc.teachersapp;
+package tarik.inc.teachersapp.ui;
 
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import tarik.inc.teachersapp.database.Database;
 import tarik.inc.teachersapp.dto.Faculty;
 import tarik.inc.teachersapp.dto.KPIAward;
@@ -26,6 +24,8 @@ public class ScenesController implements Initializable {
     private ComboBox<String> dropBoxOfKpiAwards = new ComboBox<>();
     @FXML
     private ComboBox<String> dropBoxOfStateAwards = new ComboBox<>();
+    @FXML
+    private TableView<RowProperty> tableView = new TableView<>();
     @FXML private TextField textFieldOfFullName;
     @FXML private TextField textFieldOfProtocol;
     @FXML private TextField textFieldOfKpiAwardYear;
@@ -65,8 +65,6 @@ public class ScenesController implements Initializable {
             alert.setHeaderText("Параметри були введені з помилками");
             alert.showAndWait();
         }
-        System.out.println("---");
-        database.stream().forEach(System.out::println);
     }
 
     @Override
@@ -87,6 +85,32 @@ public class ScenesController implements Initializable {
                                          .map(StateAward::getName)
                                          .toList();
         dropBoxOfStateAwards.getItems().addAll(stateAwards);
+//        Filling tableView;
+        TableColumn<RowProperty, String> facultyColumn = new TableColumn<>("Факультет/ННІ");
+        facultyColumn.setCellValueFactory(new PropertyValueFactory<RowProperty, String>("faculty"));
+        TableColumn<RowProperty, String> nameColumn = new TableColumn<>("ПІБ");
+        nameColumn.setCellValueFactory(new PropertyValueFactory<RowProperty, String>("name"));
+        TableColumn<RowProperty, String> kpiAwardColumn = new TableColumn<>("Нагорода КПІ");
+        kpiAwardColumn.setCellValueFactory(new PropertyValueFactory<RowProperty, String>("kpiDiploma"));
+        TableColumn<RowProperty, String> stateAwardColumn = new TableColumn<>("Державна нагорода");
+        stateAwardColumn.setCellValueFactory(new PropertyValueFactory<RowProperty, String>("stateDiploma"));
+        TableColumn<RowProperty, String> protocolColumn = new TableColumn<>("№ протоколу ВР");
+        protocolColumn.setCellValueFactory(new PropertyValueFactory<RowProperty, String>("protocolNum"));
+        TableColumn<RowProperty, String> kpiDiplomaYearColumn = new TableColumn<>("Рік відзначення КПІ");
+        kpiDiplomaYearColumn.setCellValueFactory(new PropertyValueFactory<RowProperty, String>("kpiDiplomaYear"));
+        TableColumn<RowProperty, String> stateDiplomaYearColumn = new TableColumn<>("Рік відзначення Державою");
+        stateDiplomaYearColumn.setCellValueFactory(new PropertyValueFactory<RowProperty, String>("stateDiplomaYear"));
+        TableColumn<RowProperty, String> prognosticationColumn = new TableColumn<>("Прогнозування");
+        prognosticationColumn.setCellValueFactory(new PropertyValueFactory<RowProperty, String>("prognostication"));
+
+        tableView.getColumns().addAll(List.of(facultyColumn, nameColumn, kpiAwardColumn,
+                                              stateAwardColumn, protocolColumn, kpiDiplomaYearColumn,
+                                              stateDiplomaYearColumn, prognosticationColumn));
+    }
+
+    private void addRowToTable(RowDTO rowDTO) {
+        RowProperty row = new RowProperty(rowDTO);
+        tableView.getItems().add(row);
     }
 
     private boolean addIsPossible(RowDTO rowDTO) {
@@ -108,7 +132,10 @@ public class ScenesController implements Initializable {
         alert.setTitle("Додаваня в базу данних");
 
         if (addIsPossible(newRow)) {
+//            adding to database
             database.add(newRow);
+//            adding to table
+            addRowToTable(newRow);
             alert.setHeaderText("Додавання прошло успішно");
             alert.showAndWait();
 
