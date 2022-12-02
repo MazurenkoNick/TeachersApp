@@ -89,19 +89,32 @@ public class ScenesController implements Initializable {
         dropBoxOfStateAwards.getItems().addAll(stateAwards);
     }
 
+    private boolean addIsPossible(RowDTO rowDTO) {
+        String name = rowDTO.getName();
+        Faculty faculty = rowDTO.getFaculty();
+        KPIAward kpiDiploma = rowDTO.getKpiDiploma();
+        StateAward stateDiploma = rowDTO.getStateDiploma();
+        String protocolNum = rowDTO.getProtocolNum();
+        Year kpiDiplomaYear = rowDTO.getKpiDiplomaYear();
+        Year stateDiplomaYear = rowDTO.getStateDiplomaYear();
+
+        return !(database.rowWithKpiYearExists(name, faculty, kpiDiplomaYear) ||
+                database.rowWithStateYearExists(name, faculty, stateDiplomaYear) ||
+                database.rowExists(name, faculty, kpiDiploma, stateDiploma, protocolNum, kpiDiplomaYear, stateDiplomaYear));
+    }
+
     private void addAndAlert(RowDTO newRow) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Додаваня в базу данних");
 
-        if (database.rowExists(newRow.getName(), newRow.getFaculty(), newRow.getKpiDiploma(), newRow.getStateDiploma(),
-                newRow.getProtocolNum(), newRow.getKpiDiplomaYear(), newRow.getStateDiplomaYear())) {
-            alert.setHeaderText("Таке поле вже існує");
+        if (addIsPossible(newRow)) {
+            database.add(newRow);
+            alert.setHeaderText("Додавання прошло успішно");
             alert.showAndWait();
 
         }
         else {
-            database.add(newRow);
-            alert.setHeaderText("Додавання прошло успішно");
+            alert.setHeaderText("Таке поле вже існує");
             alert.showAndWait();
         }
     }

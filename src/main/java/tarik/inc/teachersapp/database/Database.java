@@ -151,8 +151,8 @@ public class Database {
                           KPIAward kpiAward, StateAward stateAward,
                           String protocolNum, Year kpiDiplomaYear, Year stateDiplomaYear) {
 
-        return !findRowDTO(name, faculty, kpiAward, stateAward,
-                           protocolNum, kpiDiplomaYear, stateDiplomaYear).equals(RowDTO.EMPTY);
+        return findRowDTO(name, faculty, kpiAward, stateAward,
+                           protocolNum, kpiDiplomaYear, stateDiplomaYear).isNotEmpty();
     }
 
     public RowDTO findRowDTO(String name, Faculty faculty,
@@ -167,6 +167,26 @@ public class Database {
                 .filter(rowDTO -> rowDTO.getKpiDiplomaYear().equals(kpiDiplomaYear))
                 .filter(rowDTO -> rowDTO.getStateDiplomaYear().equals(stateDiplomaYear))
                 .findFirst().orElse(RowDTO.EMPTY);
+    }
+
+    public boolean rowWithKpiYearExists(String name, Faculty faculty, Year kpiDiplomaYear) {
+        RowDTO row = data.stream()
+                .filter(rowDTO -> rowDTO.getName().equals(name))
+                .filter(rowDTO -> rowDTO.getFaculty().equals(faculty))
+                .filter(rowDTO -> rowDTO.getKpiDiplomaYear().equals(kpiDiplomaYear))
+                .findFirst().orElse(RowDTO.EMPTY);
+
+        return row.isNotEmpty();
+    }
+
+    public boolean rowWithStateYearExists(String name, Faculty faculty, Year stateDiplomaYear) {
+        RowDTO row = data.stream()
+                .filter(rowDTO -> rowDTO.getName().equals(name))
+                .filter(rowDTO -> rowDTO.getFaculty().equals(faculty))
+                .filter(rowDTO -> rowDTO.getStateDiplomaYear().equals(stateDiplomaYear))
+                .findFirst().orElse(RowDTO.EMPTY);
+
+        return row.isNotEmpty();
     }
 
     public RowDTO SearchByID(Integer id) {
