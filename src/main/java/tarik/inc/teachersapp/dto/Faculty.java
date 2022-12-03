@@ -2,7 +2,7 @@ package tarik.inc.teachersapp.dto;
 
 public enum Faculty {
     IAT("ІАТ"),
-    IATE("IATE"),
+    IATE("ІАТЕ"),
     IEE("ІЕЕ"),
     IMZ("ІМЗ"),
     IPSA("ІПСА"),

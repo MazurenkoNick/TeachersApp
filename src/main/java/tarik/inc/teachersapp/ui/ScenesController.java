@@ -3,15 +3,22 @@ package tarik.inc.teachersapp.ui;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+import tarik.inc.teachersapp.HelloApplication;
 import tarik.inc.teachersapp.database.Database;
 import tarik.inc.teachersapp.dto.Faculty;
 import tarik.inc.teachersapp.dto.KPIAward;
 import tarik.inc.teachersapp.dto.RowDTO;
 import tarik.inc.teachersapp.dto.StateAward;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.Year;
 import java.util.*;
@@ -31,6 +38,9 @@ public class ScenesController implements Initializable {
     @FXML private TextField textFieldOfKpiAwardYear;
     @FXML private TextField textFieldOfStateAwardYear;
     @FXML private Button addRowToDbButton;
+    @FXML private TextField textFieldFaculty;
+    @FXML private TextField textFieldKpiAward;
+    @FXML private TextField textFieldStateAward;
 
     private final Database database;
 
@@ -64,6 +74,31 @@ public class ScenesController implements Initializable {
         catch (Exception e) {
             alert.setHeaderText("Параметри були введені з помилками");
             alert.showAndWait();
+        }
+    }
+
+    public void showAllRows(ActionEvent event) {
+        database.stream()
+                .forEach(this::addRowToTable);
+    }
+
+    public void searchAllRows(ActionEvent event) {
+        try {
+            String name = textFieldOfFullName.getText();
+            String faculty = textFieldFaculty.getText();
+            String protocolNum = textFieldOfProtocol.getText();
+            String kpiAward = textFieldKpiAward.getText();
+            String stateAward = textFieldStateAward.getText();
+            String kpiDiplomaYear = textFieldOfKpiAwardYear.getText();
+            String stateDiplomaYear = textFieldOfStateAwardYear.getText();
+
+            tableView.getItems().clear();
+            List<RowDTO> matches = findAllMatches(name, faculty, protocolNum, kpiAward,
+                                                  stateAward, kpiDiplomaYear, stateDiplomaYear);
+            addAllRowsToTable(matches);
+        }
+        catch (Exception e) {
+            errorAlert("Параметри полів введені з помилками");
         }
     }
 
@@ -108,9 +143,74 @@ public class ScenesController implements Initializable {
                                               stateDiplomaYearColumn, prognosticationColumn));
     }
 
+    private List<RowDTO> findAllMatches(String name, String faculty, String protocolNum, String kpiAward,
+                                        String stateAward, String kpiDiplomaYear, String stateDiplomaYear) {
+        return database.stream()
+                .filter(rowDTO -> {
+                    if (name.isBlank()) return true;
+                    return rowDTO.getName().equals(name);
+                })
+                .filter(rowDTO -> {
+                    if (faculty.isBlank()) return true;
+                    return rowDTO.getFaculty().getName().equalsIgnoreCase(faculty);
+                })
+                .filter(rowDTO -> {
+                    if (protocolNum.isBlank()) return true;
+                    return rowDTO.getProtocolNum().equals(protocolNum);
+                })
+                .filter(rowDTO -> {
+                    if (kpiAward.isBlank()) return true;
+                    return rowDTO.getKpiDiploma().getName().equalsIgnoreCase(kpiAward);
+                })
+                .filter(rowDTO -> {
+                    if (stateAward.isBlank()) return true;
+                    return rowDTO.getStateDiploma().getName().equalsIgnoreCase(stateAward);
+                })
+                .filter(rowDTO -> {
+                    if (kpiDiplomaYear.isBlank()) return true;
+                    return rowDTO.getKpiDiplomaYear().equals(Year.parse(kpiDiplomaYear));
+                })
+                .filter(rowDTO -> {
+                    if (stateDiplomaYear.isBlank()) return true;
+                    return rowDTO.getStateDiplomaYear().equals(Year.parse(stateDiplomaYear));
+                })
+                .toList();
+    }
+
+
+    private void addAllRowsToTable(Iterable<RowDTO> rows) {
+        for (RowDTO row : rows) {
+            addRowToTable(row);
+        }
+    }
+
+    private void errorAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Пошук");
+        alert.setHeaderText(message);
+        alert.showAndWait();
+    }
+
     private void addRowToTable(RowDTO rowDTO) {
         RowProperty row = new RowProperty(rowDTO);
         tableView.getItems().add(row);
+    }
+
+    public void toScene1(ActionEvent event) throws IOException {
+        toScene(event, "Scene1.fxml");
+    }
+
+    public void toScene2(ActionEvent event) throws IOException {
+        toScene(event, "Scene2.fxml");
+    }
+
+
+    private void toScene(ActionEvent event, String sceneName) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(HelloApplication.class.getResource(sceneName)));
+        Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     private boolean addIsPossible(RowDTO rowDTO) {
