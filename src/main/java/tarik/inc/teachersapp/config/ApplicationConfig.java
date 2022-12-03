@@ -22,6 +22,7 @@ public class ApplicationConfig {
                 .addColumn("PROTOCOL NUMBER")
                 .addColumn("KPI DIPLOMA YEAR")
                 .addColumn("STATE DIPLOMA YEAR")
+                .addColumn("PROGNOSTICATION")
                 .build();
     }
 

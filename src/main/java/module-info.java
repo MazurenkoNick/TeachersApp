@@ -16,5 +16,6 @@ module tarik.inc.teachersapp {
     opens tarik.inc.teachersapp to javafx.fxml;
     exports tarik.inc.teachersapp;
     exports tarik.inc.teachersapp.ui;
+    exports tarik.inc.teachersapp.dto to com.fasterxml.jackson.databind;
     opens tarik.inc.teachersapp.ui to javafx.fxml;
 }
