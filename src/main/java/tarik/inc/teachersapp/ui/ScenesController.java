@@ -2,6 +2,7 @@ package tarik.inc.teachersapp.ui;
 
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -10,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import tarik.inc.teachersapp.HelloApplication;
 import tarik.inc.teachersapp.database.Database;
@@ -17,7 +19,9 @@ import tarik.inc.teachersapp.dto.Faculty;
 import tarik.inc.teachersapp.dto.KPIAward;
 import tarik.inc.teachersapp.dto.RowDTO;
 import tarik.inc.teachersapp.dto.StateAward;
+import tarik.inc.teachersapp.repository.Repository;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.Year;
@@ -41,11 +45,70 @@ public class ScenesController implements Initializable {
     @FXML private TextField textFieldFaculty;
     @FXML private TextField textFieldKpiAward;
     @FXML private TextField textFieldStateAward;
-
+    @FXML private TextField textFieldFilePath;
+    @FXML private Button buttonImportFromCSV;
+    @FXML private Button buttonExportInCSV;
+    @FXML private Button buttonImportFromXLSX;
+    @FXML private Button buttonExportToXLSX;
     private final Database database;
+    private final Repository repository;
 
     public ScenesController() {
         this.database = Database.getInstance();
+        this.repository = new Repository();
+    }
+
+    public void exportToXLSX(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        File selectedFile = fileChooser.showSaveDialog(null);
+
+        if (selectedFile != null) {
+            repository.exportToXLS(selectedFile);
+        }
+        else {
+            errorAlert("Невдалося ексопртувати файл");
+        }
+    }
+
+    public void importFromXLSX(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        File selectedFile = fileChooser.showOpenDialog(null);
+
+        if (selectedFile != null) {
+            repository.importFromXLS(selectedFile);
+        }
+        else {
+            errorAlert("Невдалося ексопртувати файл");
+        }
+        System.out.println(database.stream().toList());
+        tableView.getItems().clear();
+        tableView.getItems().addAll(database.stream().map(RowProperty::new).toList());
+    }
+
+    public void exportToCSV(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        File selectedFile = fileChooser.showSaveDialog(null);
+
+        if (selectedFile != null) {
+            repository.exportToCSV(selectedFile);
+        }
+        else {
+            errorAlert("Невдалося ексопртувати файл");
+        }
+    }
+
+    public void importFromCSV(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        File selectedFile = fileChooser.showOpenDialog(null);
+
+        if (selectedFile != null) {
+            repository.importFromCSV(selectedFile);
+        }
+        else {
+            errorAlert("Невдалося ексопртувати файл");
+        }
+        tableView.getItems().clear();
+        tableView.getItems().addAll(database.stream().map(RowProperty::new).toList());
     }
 
     public void addRowToDatabase(ActionEvent event) {
@@ -56,12 +119,14 @@ public class ScenesController implements Initializable {
             int dbSize = database.size();
             int id = (dbSize == 0) ? 0 : database.get(dbSize-1).getId()+1;
             String name = textFieldOfFullName.getText();
+            if (name.isBlank())
+                throw new IllegalArgumentException("Поле ім'я не існує");
             String protocolNum = textFieldOfProtocol.getText();
             Faculty faculty = Faculty.fromString(dropBoxOfFaculties.getSelectionModel().getSelectedItem());
             KPIAward kpiAward = KPIAward.fromString(dropBoxOfKpiAwards.getSelectionModel().getSelectedItem());
             StateAward stateAward = StateAward.fromString(dropBoxOfStateAwards.getSelectionModel().getSelectedItem());
-            Year kpiDiplomaYear = Year.parse(textFieldOfKpiAwardYear.getText());
-            Year stateDiplomaYear = Year.parse(textFieldOfStateAwardYear.getText());
+            Year kpiDiplomaYear = getValidYear(textFieldOfKpiAwardYear.getText());
+            Year stateDiplomaYear = getValidYear(textFieldOfStateAwardYear.getText());
             KPIAward prognostication = getPrognostication(name, faculty, kpiAward, stateAward,
                     protocolNum, kpiDiplomaYear, stateDiplomaYear);
 
@@ -70,11 +135,20 @@ public class ScenesController implements Initializable {
                     kpiDiplomaYear, stateDiplomaYear, prognostication);
 
             addAndAlert(newRow);
-        }
-        catch (Exception e) {
-            alert.setHeaderText("Параметри були введені з помилками");
+        } catch (IllegalArgumentException e) {
+            alert.setHeaderText(e.getMessage());
             alert.showAndWait();
         }
+        catch (Exception e) {
+            alert.setHeaderText("Поля введені неправильно");
+            alert.showAndWait();
+        }
+    }
+
+    private Year getValidYear(String year) {
+        if (year.isBlank())
+            year = "0";
+        return Year.parse(year);
     }
 
     public void showAllRows(ActionEvent event) {
@@ -177,7 +251,6 @@ public class ScenesController implements Initializable {
                 })
                 .toList();
     }
-
 
     private void addAllRowsToTable(Iterable<RowDTO> rows) {
         for (RowDTO row : rows) {

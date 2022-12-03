@@ -145,23 +145,13 @@ public class Repository {
     }
 
     private String checkIfStateDiplomaIsCorrect(String stateDiploma) {
-        for (var name :
-                StateAward.values()) {
-            if (name.getName().equals(stateDiploma)) {
-                return stateDiploma;
-            }
-        }
-        throw new RuntimeException("State award was not found");
+        StateAward.valueOf(stateDiploma);
+        return stateDiploma;
     }
 
     private String checkIfKpiDiplomaIsCorrect(String kpiDiploma) {
-        for (var name :
-                KPIAward.values()) {
-            if (name.getName().equals(kpiDiploma)) {
-                return kpiDiploma;
-            }
-        }
-        throw new RuntimeException("KPI award was not found");
+        KPIAward.valueOf(kpiDiploma);
+        return kpiDiploma;
     }
 
 

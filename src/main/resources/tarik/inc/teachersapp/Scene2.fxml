@@ -28,6 +28,6 @@
       <TextField fx:id="textFieldFaculty" layoutX="182.0" layoutY="32.0" />
       <TextField fx:id="textFieldKpiAward" layoutX="181.0" layoutY="92.0" />
       <TextField fx:id="textFieldStateAward" layoutX="182.0" layoutY="122.0" />
-      <Button layoutX="53.0" layoutY="353.0" mnemonicParsing="false" onAction="#toScene1" prefHeight="25.0" prefWidth="250.0" text="Додавання в базу даних" />
+      <Button layoutX="55.0" layoutY="353.0" mnemonicParsing="false" onAction="#toScene1" prefHeight="25.0" prefWidth="250.0" text="Додавання в базу даних" />
    </children>
 </AnchorPane>
