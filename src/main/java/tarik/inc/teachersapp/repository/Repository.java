@@ -43,7 +43,7 @@ public class Repository {
 
     public void load() {
         if (!DATABASE_FILE.exists()) {
-            // Exports empty db, so creates empty but correct file
+            // Exports empty db, so creates empty and correct file
             new Repository().exportToXLS(DATABASE_FILE);
         }
         importFromXLS(DATABASE_FILE);
