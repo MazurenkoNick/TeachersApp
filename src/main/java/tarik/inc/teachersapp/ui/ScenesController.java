@@ -50,23 +50,12 @@ public class ScenesController implements Initializable {
     @FXML
     private TextField textFieldOfStateAwardYear;
     @FXML
-    private Button addRowToDbButton;
-    @FXML
     private TextField textFieldFaculty;
     @FXML
     private TextField textFieldKpiAward;
     @FXML
     private TextField textFieldStateAward;
-    @FXML
-    private TextField textFieldFilePath;
-    @FXML
-    private Button buttonImportFromCSV;
-    @FXML
-    private Button buttonExportInCSV;
-    @FXML
-    private Button buttonImportFromXLSX;
-    @FXML
-    private Button buttonExportToXLSX;
+
 
     public ScenesController() {
         this.database = Database.getInstance();
@@ -95,7 +84,7 @@ public class ScenesController implements Initializable {
         }
         System.out.println(database.stream().toList());
         tableView.getItems().clear();
-        tableView.getItems().addAll(database.stream().map(RowProperty::new).toList());
+        addAllRowsToTable();
     }
 
     public void exportToCSV(ActionEvent event) {
@@ -119,7 +108,7 @@ public class ScenesController implements Initializable {
             errorAlert("Невдалося ексопртувати файл");
         }
         tableView.getItems().clear();
-        tableView.getItems().addAll(database.stream().map(RowProperty::new).toList());
+        addAllRowsToTable();
     }
 
     public void addRowToDatabase(ActionEvent event) {
@@ -225,6 +214,8 @@ public class ScenesController implements Initializable {
         tableView.getColumns().addAll(List.of(facultyColumn, nameColumn, kpiAwardColumn,
                 stateAwardColumn, protocolColumn, kpiDiplomaYearColumn,
                 stateDiplomaYearColumn, prognosticationColumn));
+
+        addAllRowsToTable();
     }
 
     private List<RowDTO> findAllMatches(String name, String faculty, String protocolNum, String kpiAward,
@@ -261,6 +252,11 @@ public class ScenesController implements Initializable {
                 .toList();
     }
 
+    private void addAllRowsToTable() {
+        tableView.getItems().addAll(database.stream().map(RowProperty::new).toList());
+
+    }
+
     private void addAllRowsToTable(Iterable<RowDTO> rows) {
         for (RowDTO row : rows) {
             addRowToTable(row);
@@ -286,7 +282,6 @@ public class ScenesController implements Initializable {
     public void toScene2(ActionEvent event) throws IOException {
         toScene(event, "Scene2.fxml");
     }
-
 
     private void toScene(ActionEvent event, String sceneName) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(HelloApplication.class.getResource(sceneName)));
