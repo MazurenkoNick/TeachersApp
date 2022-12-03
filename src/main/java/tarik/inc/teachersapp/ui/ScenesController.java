@@ -78,6 +78,7 @@ public class ScenesController implements Initializable {
     }
 
     public void showAllRows(ActionEvent event) {
+        tableView.getItems().clear();
         database.stream()
                 .forEach(this::addRowToTable);
     }
