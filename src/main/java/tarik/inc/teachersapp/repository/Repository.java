@@ -27,7 +27,7 @@ import java.util.stream.StreamSupport;
 
 
 public class Repository {
-    private final File DATABASE_FILE = new File("database.xls");
+    private final File DATABASE_FILE = new File("database.xlsx");
 
     private final Database database;
 
@@ -42,6 +42,13 @@ public class Repository {
     }
 
     public void load() {
+        if (!DATABASE_FILE.exists()) {
+            try {
+                DATABASE_FILE.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
         importFromXLS(DATABASE_FILE);
     }
 
