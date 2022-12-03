@@ -1,33 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
-
-<AnchorPane prefHeight="403.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tarik.inc.teachersapp.ui.ScenesController">
-   <children>
-      <Label layoutX="60.0" layoutY="36.0" text="Факультет/ННІ" />
-      <Label layoutX="91.0" layoutY="66.0" text="ПІБ" />
-      <TextField fx:id="textFieldOfFullName" layoutX="181.0" layoutY="62.0" />
-      <Label layoutX="64.0" layoutY="96.0" text="Нагорода КПІ" />
-      <Label layoutX="45.0" layoutY="126.0" text="Державна нагорода" />
-      <Label layoutX="58.0" layoutY="156.0" text="№ протоколу ВР" />
-      <Label layoutX="50.0" layoutY="186.0" text="Рік відзначення КПІ" />
-      <Label layoutX="27.0" layoutY="216.0" text="Рік відзначення Державою" />
-      <TextField fx:id="textFieldOfProtocol" layoutX="181.0" layoutY="152.0" />
-      <TextField fx:id="textFieldOfKpiAwardYear" layoutX="181.0" layoutY="182.0" />
-      <TextField fx:id="textFieldOfStateAwardYear" layoutX="181.0" layoutY="212.0" />
-      <TableView fx:id="tableView" layoutX="344.0" layoutY="32.0" prefHeight="333.0" prefWidth="651.0">
-         <columns>
-         </columns>
-      </TableView>
-      <Button layoutX="56.0" layoutY="279.0" mnemonicParsing="false" onAction="#searchAllRows" prefWidth="250.0" text="Пошук в базі даних" />
-      <Button layoutX="55.0" layoutY="318.0" mnemonicParsing="false" onAction="#showAllRows" prefHeight="25.0" prefWidth="250.0" text="Показати всі дані" />
-      <TextField fx:id="textFieldFaculty" layoutX="182.0" layoutY="32.0" />
-      <TextField fx:id="textFieldKpiAward" layoutX="181.0" layoutY="92.0" />
-      <TextField fx:id="textFieldStateAward" layoutX="182.0" layoutY="122.0" />
-      <Button layoutX="55.0" layoutY="353.0" mnemonicParsing="false" onAction="#toScene1" prefHeight="25.0" prefWidth="250.0" text="Додавання в базу даних" />
-   </children>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="403.0" prefWidth="1000.0"
+            xmlns="http://javafx.com/javafx/19" fx:controller="tarik.inc.teachersapp.ui.ScenesController">
+    <Label layoutX="60.0" layoutY="36.0" text="Факультет/ННІ"/>
+    <Label layoutX="91.0" layoutY="66.0" text="ПІБ"/>
+    <TextField fx:id="textFieldOfFullName" layoutX="181.0" layoutY="62.0"/>
+    <Label layoutX="64.0" layoutY="96.0" text="Нагорода КПІ"/>
+    <Label layoutX="45.0" layoutY="126.0" text="Державна нагорода"/>
+    <Label layoutX="58.0" layoutY="156.0" text="№ протоколу ВР"/>
+    <Label layoutX="50.0" layoutY="186.0" text="Рік відзначення КПІ"/>
+    <Label layoutX="27.0" layoutY="216.0" text="Рік відзначення Державою"/>
+    <TextField fx:id="textFieldOfProtocol" layoutX="181.0" layoutY="152.0"/>
+    <TextField fx:id="textFieldOfKpiAwardYear" layoutX="181.0" layoutY="182.0"/>
+    <TextField fx:id="textFieldOfStateAwardYear" layoutX="181.0" layoutY="212.0"/>
+    <TableView fx:id="tableView" layoutX="344.0" layoutY="32.0" prefHeight="333.0" prefWidth="651.0">
+        <columns>
+        </columns>
+    </TableView>
+    <Button layoutX="56.0" layoutY="279.0" mnemonicParsing="false" onAction="#searchAllRows" prefWidth="250.0"
+            text="Пошук в базі даних"/>
+    <Button layoutX="55.0" layoutY="318.0" mnemonicParsing="false" onAction="#showAllRows" prefHeight="25.0"
+            prefWidth="250.0" text="Показати всі дані"/>
+    <TextField fx:id="textFieldFaculty" layoutX="182.0" layoutY="32.0"/>
+    <TextField fx:id="textFieldKpiAward" layoutX="181.0" layoutY="92.0"/>
+    <TextField fx:id="textFieldStateAward" layoutX="182.0" layoutY="122.0"/>
+    <Button layoutX="55.0" layoutY="353.0" mnemonicParsing="false" onAction="#toScene1" prefHeight="25.0"
+            prefWidth="250.0" text="Додавання в базу даних"/>
 </AnchorPane>

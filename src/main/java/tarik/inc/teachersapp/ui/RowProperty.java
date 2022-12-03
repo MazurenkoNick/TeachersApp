@@ -29,95 +29,95 @@ public class RowProperty {
         return name.get();
     }
 
-    public SimpleStringProperty nameProperty() {
-        return name;
-    }
-
     public void setName(String name) {
         this.name.set(name);
+    }
+
+    public SimpleStringProperty nameProperty() {
+        return name;
     }
 
     public String getFaculty() {
         return faculty.get();
     }
 
-    public SimpleStringProperty facultyProperty() {
-        return faculty;
-    }
-
     public void setFaculty(String faculty) {
         this.faculty.set(faculty);
+    }
+
+    public SimpleStringProperty facultyProperty() {
+        return faculty;
     }
 
     public String getKpiDiploma() {
         return kpiDiploma.get();
     }
 
-    public SimpleStringProperty kpiDiplomaProperty() {
-        return kpiDiploma;
-    }
-
     public void setKpiDiploma(String kpiDiploma) {
         this.kpiDiploma.set(kpiDiploma);
+    }
+
+    public SimpleStringProperty kpiDiplomaProperty() {
+        return kpiDiploma;
     }
 
     public String getStateDiploma() {
         return stateDiploma.get();
     }
 
-    public SimpleStringProperty stateDiplomaProperty() {
-        return stateDiploma;
-    }
-
     public void setStateDiploma(String stateDiploma) {
         this.stateDiploma.set(stateDiploma);
+    }
+
+    public SimpleStringProperty stateDiplomaProperty() {
+        return stateDiploma;
     }
 
     public String getProtocolNum() {
         return protocolNum.get();
     }
 
-    public SimpleStringProperty protocolNumProperty() {
-        return protocolNum;
-    }
-
     public void setProtocolNum(String protocolNum) {
         this.protocolNum.set(protocolNum);
+    }
+
+    public SimpleStringProperty protocolNumProperty() {
+        return protocolNum;
     }
 
     public String getKpiDiplomaYear() {
         return kpiDiplomaYear.get();
     }
 
-    public SimpleStringProperty kpiDiplomaYearProperty() {
-        return kpiDiplomaYear;
-    }
-
     public void setKpiDiplomaYear(String kpiDiplomaYear) {
         this.kpiDiplomaYear.set(kpiDiplomaYear);
+    }
+
+    public SimpleStringProperty kpiDiplomaYearProperty() {
+        return kpiDiplomaYear;
     }
 
     public String getStateDiplomaYear() {
         return stateDiplomaYear.get();
     }
 
-    public SimpleStringProperty stateDiplomaYearProperty() {
-        return stateDiplomaYear;
-    }
-
     public void setStateDiplomaYear(String stateDiplomaYear) {
         this.stateDiplomaYear.set(stateDiplomaYear);
+    }
+
+    public SimpleStringProperty stateDiplomaYearProperty() {
+        return stateDiplomaYear;
     }
 
     public String getPrognostication() {
         return prognostication.get();
     }
 
-    public SimpleStringProperty prognosticationProperty() {
-        return prognostication;
-    }
-
     public void setPrognostication(String prognostication) {
         this.prognostication.set(prognostication);
+    }
+
+    public SimpleStringProperty prognosticationProperty() {
+        return prognostication;
     }
 }

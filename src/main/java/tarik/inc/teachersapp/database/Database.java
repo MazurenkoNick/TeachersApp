@@ -7,23 +7,25 @@ import tarik.inc.teachersapp.dto.StateAward;
 
 import java.time.Year;
 import java.util.*;
-import java.util.function.*;
+import java.util.function.Consumer;
+import java.util.function.IntFunction;
+import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
 public class Database {
 
+    private static Database instance;
     private final List<RowDTO> data = new ArrayList<>();
 
-    private static Database instance;
+    private Database() {
+    }
 
     public static Database getInstance() {
         if (instance == null)
             instance = new Database();
 
         return instance;
-    }
-
-    private Database() {
     }
 
     public void importAll(Collection<? extends RowDTO> rows) {
@@ -148,11 +150,11 @@ public class Database {
     }
 
     public boolean rowExists(String name, Faculty faculty,
-                          KPIAward kpiAward, StateAward stateAward,
-                          String protocolNum, Year kpiDiplomaYear, Year stateDiplomaYear) {
+                             KPIAward kpiAward, StateAward stateAward,
+                             String protocolNum, Year kpiDiplomaYear, Year stateDiplomaYear) {
 
         return findRowDTO(name, faculty, kpiAward, stateAward,
-                           protocolNum, kpiDiplomaYear, stateDiplomaYear).isNotEmpty();
+                protocolNum, kpiDiplomaYear, stateDiplomaYear).isNotEmpty();
     }
 
     public RowDTO findRowDTO(String name, Faculty faculty,

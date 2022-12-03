@@ -16,11 +16,20 @@ public enum KPIAward {
     PVSlujVidKPI("Почесна відзнака 'За служіння та відданість КПІ'"),
     PVZaslPeredKPI("Почесна відзнака 'За заслуги перед КПІ'");
 
-    private final String name;
     public static final KPIAward[] allValues = values();
+    private final String name;
 
     KPIAward(String name) {
         this.name = name;
+    }
+
+    public static KPIAward fromString(String text) {
+        for (KPIAward award : allValues) {
+            if (award.name.equalsIgnoreCase(text)) {
+                return award;
+            }
+        }
+        return null;
     }
 
     public String getName() {
@@ -32,15 +41,6 @@ public enum KPIAward {
         if (nextId < allValues.length)
             return Optional.of(allValues[nextId]);
         return Optional.empty();
-    }
-
-    public static KPIAward fromString(String text) {
-        for (KPIAward award : allValues) {
-            if (award.name.equalsIgnoreCase(text)) {
-                return award;
-            }
-        }
-        return null;
     }
 }
 

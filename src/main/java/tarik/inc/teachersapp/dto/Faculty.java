@@ -26,15 +26,11 @@ public enum Faculty {
     ISZZI("ІСЗЗІ");
 
 
-    private final String name;
     public static final Faculty[] allValues = values();
+    private final String name;
 
     Faculty(String name) {
         this.name = name;
-    }
-
-    public String getName() {
-        return this.name;
     }
 
     public static Faculty fromString(String text) {
@@ -44,6 +40,10 @@ public enum Faculty {
             }
         }
         return null;
+    }
+
+    public String getName() {
+        return this.name;
     }
 
 }

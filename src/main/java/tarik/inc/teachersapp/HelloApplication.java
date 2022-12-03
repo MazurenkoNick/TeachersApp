@@ -11,6 +11,11 @@ import java.io.IOException;
 
 public class HelloApplication extends Application {
     Repository repository = new Repository();
+
+    public static void main(String[] args) {
+        launch();
+    }
+
     @Override
     public void start(Stage stage) throws IOException {
         repository.load();
@@ -23,12 +28,8 @@ public class HelloApplication extends Application {
     }
 
     @Override
-    public void stop(){
+    public void stop() {
         repository.save();
         Platform.exit();
-    }
-
-    public static void main(String[] args) {
-        launch();
     }
 }

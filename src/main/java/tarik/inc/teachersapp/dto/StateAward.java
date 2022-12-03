@@ -10,16 +10,12 @@ public enum StateAward {
     PodyakaKM("Подяка КМ України"),
     GramotaKM("Грамота КМ України");
 
-    private final String name;
     public static final StateAward[] allValues = values();
+    private final String name;
 
 
     StateAward(String name) {
         this.name = name;
-    }
-
-    public String getName() {
-        return this.name;
     }
 
     public static StateAward fromString(String text) {
@@ -29,5 +25,9 @@ public enum StateAward {
             }
         }
         return null;
+    }
+
+    public String getName() {
+        return this.name;
     }
 }

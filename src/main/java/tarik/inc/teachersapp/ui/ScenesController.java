@@ -2,7 +2,6 @@ package tarik.inc.teachersapp.ui;
 
 
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -25,10 +24,15 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.Year;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.ResourceBundle;
 
 public class ScenesController implements Initializable {
 
+    private final Database database;
+    private final Repository repository;
     @FXML
     private ComboBox<String> dropBoxOfFaculties = new ComboBox<>();
     @FXML
@@ -37,21 +41,32 @@ public class ScenesController implements Initializable {
     private ComboBox<String> dropBoxOfStateAwards = new ComboBox<>();
     @FXML
     private TableView<RowProperty> tableView = new TableView<>();
-    @FXML private TextField textFieldOfFullName;
-    @FXML private TextField textFieldOfProtocol;
-    @FXML private TextField textFieldOfKpiAwardYear;
-    @FXML private TextField textFieldOfStateAwardYear;
-    @FXML private Button addRowToDbButton;
-    @FXML private TextField textFieldFaculty;
-    @FXML private TextField textFieldKpiAward;
-    @FXML private TextField textFieldStateAward;
-    @FXML private TextField textFieldFilePath;
-    @FXML private Button buttonImportFromCSV;
-    @FXML private Button buttonExportInCSV;
-    @FXML private Button buttonImportFromXLSX;
-    @FXML private Button buttonExportToXLSX;
-    private final Database database;
-    private final Repository repository;
+    @FXML
+    private TextField textFieldOfFullName;
+    @FXML
+    private TextField textFieldOfProtocol;
+    @FXML
+    private TextField textFieldOfKpiAwardYear;
+    @FXML
+    private TextField textFieldOfStateAwardYear;
+    @FXML
+    private Button addRowToDbButton;
+    @FXML
+    private TextField textFieldFaculty;
+    @FXML
+    private TextField textFieldKpiAward;
+    @FXML
+    private TextField textFieldStateAward;
+    @FXML
+    private TextField textFieldFilePath;
+    @FXML
+    private Button buttonImportFromCSV;
+    @FXML
+    private Button buttonExportInCSV;
+    @FXML
+    private Button buttonImportFromXLSX;
+    @FXML
+    private Button buttonExportToXLSX;
 
     public ScenesController() {
         this.database = Database.getInstance();
@@ -64,8 +79,7 @@ public class ScenesController implements Initializable {
 
         if (selectedFile != null) {
             repository.exportToXLS(selectedFile);
-        }
-        else {
+        } else {
             errorAlert("Невдалося ексопртувати файл");
         }
     }
@@ -76,8 +90,7 @@ public class ScenesController implements Initializable {
 
         if (selectedFile != null) {
             repository.importFromXLS(selectedFile);
-        }
-        else {
+        } else {
             errorAlert("Невдалося ексопртувати файл");
         }
         System.out.println(database.stream().toList());
@@ -91,8 +104,7 @@ public class ScenesController implements Initializable {
 
         if (selectedFile != null) {
             repository.exportToCSV(selectedFile);
-        }
-        else {
+        } else {
             errorAlert("Невдалося ексопртувати файл");
         }
     }
@@ -103,8 +115,7 @@ public class ScenesController implements Initializable {
 
         if (selectedFile != null) {
             repository.importFromCSV(selectedFile);
-        }
-        else {
+        } else {
             errorAlert("Невдалося ексопртувати файл");
         }
         tableView.getItems().clear();
@@ -117,7 +128,7 @@ public class ScenesController implements Initializable {
 
         try {
             int dbSize = database.size();
-            int id = (dbSize == 0) ? 0 : database.get(dbSize-1).getId()+1;
+            int id = (dbSize == 0) ? 0 : database.get(dbSize - 1).getId() + 1;
             String name = textFieldOfFullName.getText();
             if (name.isBlank())
                 throw new IllegalArgumentException("Поле ім'я не існує");
@@ -138,8 +149,7 @@ public class ScenesController implements Initializable {
         } catch (IllegalArgumentException e) {
             alert.setHeaderText(e.getMessage());
             alert.showAndWait();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             alert.setHeaderText("Поля введені неправильно");
             alert.showAndWait();
         }
@@ -169,10 +179,9 @@ public class ScenesController implements Initializable {
 
             tableView.getItems().clear();
             List<RowDTO> matches = findAllMatches(name, faculty, protocolNum, kpiAward,
-                                                  stateAward, kpiDiplomaYear, stateDiplomaYear);
+                    stateAward, kpiDiplomaYear, stateDiplomaYear);
             addAllRowsToTable(matches);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             errorAlert("Параметри полів введені з помилками");
         }
     }
@@ -181,19 +190,19 @@ public class ScenesController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 //        Filling dropBoxOfFaculties
         List<String> faculties = Arrays.stream(Faculty.allValues)
-                                       .map(Faculty::getName)
-                                       .toList();
+                .map(Faculty::getName)
+                .toList();
         dropBoxOfFaculties.getItems().addAll(faculties);
 
 //        Filling dropBoxOfKpiAwards:
         List<String> kpiAwards = Arrays.stream(KPIAward.allValues)
-                                       .map(KPIAward::getName)
-                                       .toList();
+                .map(KPIAward::getName)
+                .toList();
         dropBoxOfKpiAwards.getItems().addAll(kpiAwards);
 //        Filling dropBoxOfStateAwards:
         List<String> stateAwards = Arrays.stream(StateAward.allValues)
-                                         .map(StateAward::getName)
-                                         .toList();
+                .map(StateAward::getName)
+                .toList();
         dropBoxOfStateAwards.getItems().addAll(stateAwards);
 //        Filling tableView;
         TableColumn<RowProperty, String> facultyColumn = new TableColumn<>("Факультет/ННІ");
@@ -214,8 +223,8 @@ public class ScenesController implements Initializable {
         prognosticationColumn.setCellValueFactory(new PropertyValueFactory<RowProperty, String>("prognostication"));
 
         tableView.getColumns().addAll(List.of(facultyColumn, nameColumn, kpiAwardColumn,
-                                              stateAwardColumn, protocolColumn, kpiDiplomaYearColumn,
-                                              stateDiplomaYearColumn, prognosticationColumn));
+                stateAwardColumn, protocolColumn, kpiDiplomaYearColumn,
+                stateDiplomaYearColumn, prognosticationColumn));
     }
 
     private List<RowDTO> findAllMatches(String name, String faculty, String protocolNum, String kpiAward,
@@ -281,7 +290,7 @@ public class ScenesController implements Initializable {
 
     private void toScene(ActionEvent event, String sceneName) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(HelloApplication.class.getResource(sceneName)));
-        Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -313,8 +322,7 @@ public class ScenesController implements Initializable {
             alert.setHeaderText("Додавання прошло успішно");
             alert.showAndWait();
 
-        }
-        else {
+        } else {
             alert.setHeaderText("Таке поле вже існує");
             alert.showAndWait();
         }
@@ -325,7 +333,7 @@ public class ScenesController implements Initializable {
                                               String protocolNum, Year kpiDiplomaYear, Year stateDiplomaYear) {
 
         return !database.rowExists(name, faculty, kpiAward, stateAward,
-                                    protocolNum, kpiDiplomaYear, stateDiplomaYear);
+                protocolNum, kpiDiplomaYear, stateDiplomaYear);
     }
 
     private KPIAward getPrognostication(String name, Faculty faculty,
@@ -334,8 +342,8 @@ public class ScenesController implements Initializable {
 
         if (prognosticationIsPossible(name, faculty, kpiAward, stateAward, protocolNum, kpiDiplomaYear, stateDiplomaYear)) {
             return KPIAward.fromString(kpiAward.getName())
-                           .next()
-                           .orElse(KPIAward.NONE);
+                    .next()
+                    .orElse(KPIAward.NONE);
         }
         return KPIAward.NONE;
     }
