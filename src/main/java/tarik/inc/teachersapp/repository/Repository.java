@@ -43,11 +43,8 @@ public class Repository {
 
     public void load() {
         if (!DATABASE_FILE.exists()) {
-            try {
-                DATABASE_FILE.createNewFile();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            // Exports empty db, so creates empty but correct file
+            new Repository().exportToXLS(DATABASE_FILE);
         }
         importFromXLS(DATABASE_FILE);
     }
