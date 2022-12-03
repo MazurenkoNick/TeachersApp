@@ -20,7 +20,7 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws IOException {
         repository.load();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Scene1.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1000, 439);
+        Scene scene = new Scene(fxmlLoader.load(), 1300, 450);
         stage.setTitle("Application");
         stage.setScene(scene);
         stage.setResizable(false);

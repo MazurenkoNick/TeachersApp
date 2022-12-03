@@ -223,7 +223,7 @@ public class ScenesController implements Initializable {
         return database.stream()
                 .filter(rowDTO -> {
                     if (name.isBlank()) return true;
-                    return rowDTO.getName().equals(name);
+                    return rowDTO.getName().equalsIgnoreCase(name);
                 })
                 .filter(rowDTO -> {
                     if (faculty.isBlank()) return true;
@@ -235,11 +235,11 @@ public class ScenesController implements Initializable {
                 })
                 .filter(rowDTO -> {
                     if (kpiAward.isBlank()) return true;
-                    return rowDTO.getKpiDiploma().getName().equalsIgnoreCase(kpiAward);
+                    return rowDTO.getKpiDiploma().getName().trim().equalsIgnoreCase(kpiAward.trim());
                 })
                 .filter(rowDTO -> {
                     if (stateAward.isBlank()) return true;
-                    return rowDTO.getStateDiploma().getName().equalsIgnoreCase(stateAward);
+                    return rowDTO.getStateDiploma().getName().trim().equalsIgnoreCase(stateAward.trim());
                 })
                 .filter(rowDTO -> {
                     if (kpiDiplomaYear.isBlank()) return true;
