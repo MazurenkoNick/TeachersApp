@@ -69,7 +69,7 @@ public class ScenesController implements Initializable {
         if (selectedFile != null) {
             repository.exportToXLS(selectedFile);
         } else {
-            errorAlert("Невдалося ексопртувати файл");
+            errorAlert("Невдалося експортувати файл");
         }
     }
 
@@ -80,7 +80,7 @@ public class ScenesController implements Initializable {
         if (selectedFile != null) {
             repository.importFromXLS(selectedFile);
         } else {
-            errorAlert("Невдалося ексопртувати файл");
+            errorAlert("Невдалося імпортувати файл");
         }
         System.out.println(database.stream().toList());
         tableView.getItems().clear();
@@ -94,7 +94,7 @@ public class ScenesController implements Initializable {
         if (selectedFile != null) {
             repository.exportToCSV(selectedFile);
         } else {
-            errorAlert("Невдалося ексопртувати файл");
+            errorAlert("Невдалося експортувати файл");
         }
     }
 
@@ -105,7 +105,7 @@ public class ScenesController implements Initializable {
         if (selectedFile != null) {
             repository.importFromCSV(selectedFile);
         } else {
-            errorAlert("Невдалося ексопртувати файл");
+            errorAlert("Невдалося імпортувати файл");
         }
         tableView.getItems().clear();
         addAllRowsToTable();
@@ -119,16 +119,31 @@ public class ScenesController implements Initializable {
             int dbSize = database.size();
             int id = (dbSize == 0) ? 0 : database.get(dbSize - 1).getId() + 1;
             String name = textFieldOfFullName.getText();
-            if (name.isBlank())
-                throw new IllegalArgumentException("Поле ім'я не існує");
             String protocolNum = textFieldOfProtocol.getText();
             Faculty faculty = Faculty.fromString(dropBoxOfFaculties.getSelectionModel().getSelectedItem());
-            KPIAward kpiAward = KPIAward.fromString(dropBoxOfKpiAwards.getSelectionModel().getSelectedItem());
-            StateAward stateAward = StateAward.fromString(dropBoxOfStateAwards.getSelectionModel().getSelectedItem());
+
+            String kpiAwardText = dropBoxOfKpiAwards.getSelectionModel().getSelectedItem();
+            if (kpiAwardText == null)
+                kpiAwardText = " - ";
+            KPIAward kpiAward = KPIAward.fromString(kpiAwardText);
+
+            String stateAwardText = dropBoxOfStateAwards.getSelectionModel().getSelectedItem();
+            if (stateAwardText == null)
+                stateAwardText = " - ";
+            StateAward stateAward = StateAward.fromString(stateAwardText);
+
             Year kpiDiplomaYear = getValidYear(textFieldOfKpiAwardYear.getText());
             Year stateDiplomaYear = getValidYear(textFieldOfStateAwardYear.getText());
             KPIAward prognostication = getPrognostication(name, faculty, kpiAward, stateAward,
                     protocolNum, kpiDiplomaYear, stateDiplomaYear);
+
+            if (name.isBlank())
+                throw new IllegalArgumentException("Поля ім'я має бути заповненим");
+            else if (!kpiDiplomaYear.equals(Year.of(0)) && kpiAward.equals(KPIAward.NONE))
+                throw new IllegalArgumentException("Нагорода КПІ має бути обраною");
+            else if (!stateDiplomaYear.equals(Year.of(0)) && stateAward.equals(StateAward.NONE) ||
+                     !protocolNum.isBlank() && stateAward.equals(StateAward.NONE))
+                throw new IllegalArgumentException("Державна нагорода має бути обраною");
 
             RowDTO newRow = new RowDTO(id, name, faculty,
                     kpiAward, stateAward, protocolNum,
@@ -139,7 +154,7 @@ public class ScenesController implements Initializable {
             alert.setHeaderText(e.getMessage());
             alert.showAndWait();
         } catch (Exception e) {
-            alert.setHeaderText("Поля введені неправильно");
+            alert.setHeaderText("Поля введені неправильно / Поля не заповнені");
             alert.showAndWait();
         }
     }
