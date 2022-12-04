@@ -165,7 +165,7 @@ public class Database {
                 .filter(rowDTO -> rowDTO.getKpiDiplomaYear().equals(kpiDiplomaYear))
                 .findFirst().orElse(RowDTO.EMPTY);
 
-        if (row.getKpiDiplomaYear().equals(Year.of(0)))
+        if (!row.equals(RowDTO.EMPTY) && row.getKpiDiplomaYear().equals(Year.of(0)))
             return false;
         return row.isNotEmpty();
     }
@@ -177,7 +177,7 @@ public class Database {
                 .filter(rowDTO -> rowDTO.getStateDiplomaYear().equals(stateDiplomaYear))
                 .findFirst().orElse(RowDTO.EMPTY);
 
-        if (row.getStateDiplomaYear().equals(Year.of(0)))
+        if (!row.equals(RowDTO.EMPTY) && row.getStateDiplomaYear().equals(Year.of(0)))
             return false;
         return row.isNotEmpty();
     }
