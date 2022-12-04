@@ -298,7 +298,7 @@ public class ScenesController implements Initializable {
         stage.show();
     }
 
-    private boolean addIsPossible(RowDTO rowDTO) throws IllegalArgumentException{
+    private boolean addingIsPossible(RowDTO rowDTO) {
         String name = rowDTO.getName();
         Faculty faculty = rowDTO.getFaculty();
         KPIAward kpiDiploma = rowDTO.getKpiDiploma();
@@ -347,11 +347,11 @@ public class ScenesController implements Initializable {
                 database.rowExists(name, faculty, kpiDiploma, stateDiploma, protocolNum, kpiDiplomaYear, stateDiplomaYear));
     }
 
-    private void addAndAlert(RowDTO newRow) throws IllegalArgumentException {
+    private void addAndAlert(RowDTO newRow) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Додаваня в базу данних");
 
-        if (addIsPossible(newRow)) {
+        if (addingIsPossible(newRow)) {
 //            adding to database
             database.add(newRow);
 //            adding to table
