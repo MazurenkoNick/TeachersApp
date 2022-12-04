@@ -132,13 +132,13 @@ public class Repository {
         try {
             Integer id = Integer.valueOf(row.getCell(0).getStringCellValue());
             String name = row.getCell(1).getStringCellValue();
-            Faculty faculty = Faculty.valueOf(row.getCell(2).getStringCellValue());
-            KPIAward kpiDiploma = KPIAward.valueOf(checkIfKpiDiplomaIsCorrect(row.getCell(3).getStringCellValue()));
-            StateAward stateDiploma = StateAward.valueOf(checkIfStateDiplomaIsCorrect(row.getCell(4).getStringCellValue()));
+            Faculty faculty = Faculty.fromString(row.getCell(2).getStringCellValue());
+            KPIAward kpiDiploma = KPIAward.fromString(checkIfKpiDiplomaIsCorrect(row.getCell(3).getStringCellValue()));
+            StateAward stateDiploma = StateAward.fromString(checkIfStateDiplomaIsCorrect(row.getCell(4).getStringCellValue()));
             String protocolNum = row.getCell(5).getStringCellValue();
             Year kpiDiplomaYear = Year.parse(row.getCell(6).getStringCellValue());
             Year stateDiplomaYear = Year.parse(row.getCell(7).getStringCellValue());
-            KPIAward prognostication = KPIAward.valueOf(checkIfKpiDiplomaIsCorrect((row.getCell(8).getStringCellValue())));
+            KPIAward prognostication = KPIAward.fromString(checkIfKpiDiplomaIsCorrect((row.getCell(8).getStringCellValue())));
 
             return new RowDTO(id, name, faculty,
                     kpiDiploma, stateDiploma, protocolNum,
@@ -149,12 +149,12 @@ public class Repository {
     }
 
     private String checkIfStateDiplomaIsCorrect(String stateDiploma) {
-        StateAward.valueOf(stateDiploma);
+        StateAward.fromString(stateDiploma);
         return stateDiploma;
     }
 
     private String checkIfKpiDiplomaIsCorrect(String kpiDiploma) {
-        KPIAward.valueOf(kpiDiploma);
+        KPIAward.fromString(kpiDiploma);
         return kpiDiploma;
     }
 

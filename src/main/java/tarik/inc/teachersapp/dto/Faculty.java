@@ -1,5 +1,7 @@
 package tarik.inc.teachersapp.dto;
 
+import java.util.Arrays;
+
 public enum Faculty {
     IAT("ІАТ"),
     IATE("ІАТЕ"),
@@ -33,16 +35,19 @@ public enum Faculty {
         this.name = name;
     }
 
-    public static Faculty fromString(String text) {
-        for (Faculty faculty : allValues) {
-            if (faculty.name.equalsIgnoreCase(text)) {
-                return faculty;
-            }
-        }
-        return null;
+    public static Faculty fromString(String name) {
+        return Arrays.stream(values())
+                .filter(faculty -> faculty.getName().equals(name))
+                .findFirst()
+                .orElse(null);
     }
 
     public String getName() {
+        return this.name;
+    }
+
+    @Override
+    public String toString() {
         return this.name;
     }
 

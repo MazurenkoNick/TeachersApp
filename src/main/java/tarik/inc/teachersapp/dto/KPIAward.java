@@ -1,5 +1,6 @@
 package tarik.inc.teachersapp.dto;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 public enum KPIAward {
@@ -23,13 +24,11 @@ public enum KPIAward {
         this.name = name;
     }
 
-    public static KPIAward fromString(String text) {
-        for (KPIAward award : allValues) {
-            if (award.name.equalsIgnoreCase(text)) {
-                return award;
-            }
-        }
-        return null;
+    public static KPIAward fromString(String name) {
+        return Arrays.stream(values())
+                .filter(kpiAward -> kpiAward.getName().equals(name))
+                .findFirst()
+                .orElse(null);
     }
 
     public String getName() {
@@ -41,6 +40,11 @@ public enum KPIAward {
         if (nextId < allValues.length)
             return Optional.of(allValues[nextId]);
         return Optional.empty();
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
     }
 }
 

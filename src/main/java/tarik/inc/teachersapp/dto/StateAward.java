@@ -1,5 +1,6 @@
 package tarik.inc.teachersapp.dto;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 public enum StateAward {
@@ -20,13 +21,11 @@ public enum StateAward {
         this.name = name;
     }
 
-    public static StateAward fromString(String text) {
-        for (StateAward award : allValues) {
-            if (award.name.equalsIgnoreCase(text)) {
-                return award;
-            }
-        }
-        return null;
+    public static StateAward fromString(String name) {
+        return Arrays.stream(values())
+                .filter(stateAward -> stateAward.getName().equals(name))
+                .findFirst()
+                .orElse(null);
     }
 
     public String getName() {
@@ -38,5 +37,10 @@ public enum StateAward {
         if (nextId < allValues.length)
             return Optional.of(allValues[nextId]);
         return Optional.empty();
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
     }
 }
