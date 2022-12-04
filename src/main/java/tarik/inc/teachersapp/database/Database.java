@@ -1,5 +1,6 @@
 package tarik.inc.teachersapp.database;
 
+import org.apache.poi.ss.usermodel.Row;
 import tarik.inc.teachersapp.dto.Faculty;
 import tarik.inc.teachersapp.dto.KPIAward;
 import tarik.inc.teachersapp.dto.RowDTO;
@@ -157,6 +158,47 @@ public class Database {
                 protocolNum, kpiDiplomaYear, stateDiplomaYear).isNotEmpty();
     }
 
+    public boolean rowWithKpiYearExists(String name, Faculty faculty, Year kpiDiplomaYear) {
+        RowDTO row = data.stream()
+                .filter(rowDTO -> rowDTO.getName().equals(name))
+                .filter(rowDTO -> rowDTO.getFaculty().equals(faculty))
+                .filter(rowDTO -> rowDTO.getKpiDiplomaYear().equals(kpiDiplomaYear))
+                .findFirst().orElse(RowDTO.EMPTY);
+
+        if (row.getKpiDiplomaYear().equals(Year.of(0)))
+            return false;
+        return row.isNotEmpty();
+    }
+
+    public boolean rowWithStateYearExists(String name, Faculty faculty, Year stateDiplomaYear) {
+        RowDTO row = data.stream()
+                .filter(rowDTO -> rowDTO.getName().equals(name))
+                .filter(rowDTO -> rowDTO.getFaculty().equals(faculty))
+                .filter(rowDTO -> rowDTO.getStateDiplomaYear().equals(stateDiplomaYear))
+                .findFirst().orElse(RowDTO.EMPTY);
+
+        if (row.getStateDiplomaYear().equals(Year.of(0)))
+            return false;
+        return row.isNotEmpty();
+    }
+
+    public RowDTO findRowWithPreviousKpiYear(String name, Faculty faculty, Year kpiDiplomaYear) {
+        return data.stream()
+                .filter(rowDTO -> rowDTO.getName().equals(name))
+                .filter(rowDTO -> rowDTO.getFaculty().equals(faculty))
+                .filter(rowDTO -> rowDTO.getKpiDiplomaYear().equals(kpiDiplomaYear))
+                .findFirst().orElse(RowDTO.EMPTY);
+    }
+
+    public RowDTO findRowWithPreviousStateAwardYear(String name, Faculty faculty, Year stateDiplomaYear) {
+        return data.stream()
+                .filter(rowDTO -> rowDTO.getName().equals(name))
+                .filter(rowDTO -> rowDTO.getFaculty().equals(faculty))
+                .filter(rowDTO -> rowDTO.getStateDiplomaYear().equals(stateDiplomaYear))
+                .findFirst().orElse(RowDTO.EMPTY);
+    }
+
+
     public RowDTO findRowDTO(String name, Faculty faculty,
                              KPIAward kpiAward, StateAward stateAward,
                              String protocolNum, Year kpiDiplomaYear, Year stateDiplomaYear) {
@@ -171,27 +213,7 @@ public class Database {
                 .findFirst().orElse(RowDTO.EMPTY);
     }
 
-    public boolean rowWithKpiYearExists(String name, Faculty faculty, Year kpiDiplomaYear) {
-        RowDTO row = data.stream()
-                .filter(rowDTO -> rowDTO.getName().equals(name))
-                .filter(rowDTO -> rowDTO.getFaculty().equals(faculty))
-                .filter(rowDTO -> rowDTO.getKpiDiplomaYear().equals(kpiDiplomaYear))
-                .findFirst().orElse(RowDTO.EMPTY);
-
-        return row.isNotEmpty();
-    }
-
-    public boolean rowWithStateYearExists(String name, Faculty faculty, Year stateDiplomaYear) {
-        RowDTO row = data.stream()
-                .filter(rowDTO -> rowDTO.getName().equals(name))
-                .filter(rowDTO -> rowDTO.getFaculty().equals(faculty))
-                .filter(rowDTO -> rowDTO.getStateDiplomaYear().equals(stateDiplomaYear))
-                .findFirst().orElse(RowDTO.EMPTY);
-
-        return row.isNotEmpty();
-    }
-
-    public RowDTO SearchByID(Integer id) {
+    public RowDTO searchByID(Integer id) {
         for (var i : data) {
             if (i.getId().equals(id)) {
                 return i;
@@ -200,7 +222,7 @@ public class Database {
         return null;
     }
 
-    public List<RowDTO> SearchByName(String name) {
+    public List<RowDTO> searchByName(String name) {
         List<RowDTO> list = new ArrayList<RowDTO>();
         for (var i : data) {
             if (i.getName().equals((name))) {
@@ -210,7 +232,7 @@ public class Database {
         return list;
     }
 
-    public List<RowDTO> SearchByFaculty(Faculty faculty) {
+    public List<RowDTO> searchByFaculty(Faculty faculty) {
         List<RowDTO> list = new ArrayList<RowDTO>();
         for (var i : data) {
             if (i.getFaculty().equals((faculty))) {
@@ -220,7 +242,7 @@ public class Database {
         return list;
     }
 
-    public List<RowDTO> SearchByKPIDiploma(KPIAward award) {
+    public List<RowDTO> searchByKPIDiploma(KPIAward award) {
         List<RowDTO> list = new ArrayList<RowDTO>();
         for (var i : data) {
             if (i.getKpiDiploma().equals((award))) {
@@ -230,7 +252,7 @@ public class Database {
         return list;
     }
 
-    public List<RowDTO> SearchByStateDiploma(StateAward award) {
+    public List<RowDTO> searchByStateDiploma(StateAward award) {
         List<RowDTO> list = new ArrayList<RowDTO>();
         for (var i : data) {
             if (i.getStateDiploma().equals((award))) {
@@ -240,7 +262,7 @@ public class Database {
         return list;
     }
 
-    public List<RowDTO> SearchByProtocolNum(String num) {
+    public List<RowDTO> searchByProtocolNum(String num) {
         List<RowDTO> list = new ArrayList<RowDTO>();
         for (var i : data) {
             if (i.getProtocolNum().equals((num))) {
@@ -250,7 +272,7 @@ public class Database {
         return list;
     }
 
-    public List<RowDTO> SearchByKPIDiplomaYear(Year year) {
+    public List<RowDTO> searchByKPIDiplomaYear(Year year) {
         List<RowDTO> list = new ArrayList<RowDTO>();
         for (var i : data) {
             if (i.getKpiDiplomaYear().equals((year))) {
@@ -260,7 +282,7 @@ public class Database {
         return list;
     }
 
-    public List<RowDTO> SearchByStateDiplomaYear(Year year) {
+    public List<RowDTO> searchByStateDiplomaYear(Year year) {
         List<RowDTO> list = new ArrayList<RowDTO>();
         for (var i : data) {
             if (i.getStateDiplomaYear().equals((year))) {
@@ -270,7 +292,7 @@ public class Database {
         return list;
     }
 
-    public List<RowDTO> SearchByPrognostication(KPIAward award) {
+    public List<RowDTO> searchByPrognostication(KPIAward award) {
         List<RowDTO> list = new ArrayList<RowDTO>();
         for (var i : data) {
             if (i.getPrognostication().equals((award))) {

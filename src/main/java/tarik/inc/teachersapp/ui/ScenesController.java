@@ -82,7 +82,6 @@ public class ScenesController implements Initializable {
         } else {
             errorAlert("Невдалося імпортувати файл");
         }
-        System.out.println(database.stream().toList());
         tableView.getItems().clear();
         addAllRowsToTable();
     }
@@ -137,14 +136,6 @@ public class ScenesController implements Initializable {
             KPIAward prognostication = getPrognostication(name, faculty, kpiAward, stateAward,
                     protocolNum, kpiDiplomaYear, stateDiplomaYear);
 
-            if (name.isBlank())
-                throw new IllegalArgumentException("Поля ім'я має бути заповненим");
-            else if (!kpiDiplomaYear.equals(Year.of(0)) && kpiAward.equals(KPIAward.NONE))
-                throw new IllegalArgumentException("Нагорода КПІ має бути обраною");
-            else if (!stateDiplomaYear.equals(Year.of(0)) && stateAward.equals(StateAward.NONE) ||
-                     !protocolNum.isBlank() && stateAward.equals(StateAward.NONE))
-                throw new IllegalArgumentException("Державна нагорода має бути обраною");
-
             RowDTO newRow = new RowDTO(id, name, faculty,
                     kpiAward, stateAward, protocolNum,
                     kpiDiplomaYear, stateDiplomaYear, prognostication);
@@ -154,15 +145,10 @@ public class ScenesController implements Initializable {
             alert.setHeaderText(e.getMessage());
             alert.showAndWait();
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             alert.setHeaderText("Поля введені неправильно / Поля не заповнені");
             alert.showAndWait();
         }
-    }
-
-    private Year getValidYear(String year) {
-        if (year.isBlank())
-            year = "0";
-        return Year.parse(year);
     }
 
     public void showAllRows(ActionEvent event) {
@@ -231,6 +217,12 @@ public class ScenesController implements Initializable {
                 stateDiplomaYearColumn, prognosticationColumn));
 
         addAllRowsToTable();
+    }
+
+    private Year getValidYear(String year) {
+        if (year.isBlank())
+            year = "0";
+        return Year.parse(year);
     }
 
     private List<RowDTO> findAllMatches(String name, String faculty, String protocolNum, String kpiAward,
@@ -306,7 +298,7 @@ public class ScenesController implements Initializable {
         stage.show();
     }
 
-    private boolean addIsPossible(RowDTO rowDTO) {
+    private boolean addIsPossible(RowDTO rowDTO) throws IllegalArgumentException{
         String name = rowDTO.getName();
         Faculty faculty = rowDTO.getFaculty();
         KPIAward kpiDiploma = rowDTO.getKpiDiploma();
@@ -315,12 +307,40 @@ public class ScenesController implements Initializable {
         Year kpiDiplomaYear = rowDTO.getKpiDiplomaYear();
         Year stateDiplomaYear = rowDTO.getStateDiplomaYear();
 
+        if (name.isBlank())
+            throw new IllegalArgumentException("Поля ім'я має бути заповненим");
+        else if (!kpiDiplomaYear.equals(Year.of(0)) && kpiDiploma.equals(KPIAward.NONE))
+            throw new IllegalArgumentException("Нагорода КПІ має бути обраною");
+        else if (!stateDiplomaYear.equals(Year.of(0)) && stateDiploma.equals(StateAward.NONE) ||
+                protocolNum.isBlank() && !stateDiploma.equals(StateAward.NONE))
+            throw new IllegalArgumentException("Державна нагорода або/i протокол мають бути обраними");
+
+        RowDTO rowWithPrevKpiAwardYear = database.findRowWithPreviousKpiYear(name, faculty,
+                kpiDiplomaYear.minusYears(1));
+
+        if (!rowWithPrevKpiAwardYear.equals(RowDTO.EMPTY)) {
+            KPIAward prognosticationKpiAward = rowWithPrevKpiAwardYear.getPrognostication();
+            if (!prognosticationKpiAward.equals(KPIAward.NONE) && !prognosticationKpiAward.equals(kpiDiploma))    {
+                throw new IllegalArgumentException("Неможливо додати КПІ нагороду");
+            }
+        }
+
+        RowDTO rowWithPrevStateAwardYear = database.findRowWithPreviousStateAwardYear(name, faculty,
+                stateDiplomaYear.minusYears(1));
+
+        if (!rowWithPrevStateAwardYear.equals(RowDTO.EMPTY)) {
+            StateAward prognosticationStateAward = rowWithPrevStateAwardYear.getStateDiploma().next().orElse(null);
+            if (prognosticationStateAward != null && !prognosticationStateAward.equals(stateDiploma)) {
+                throw new IllegalArgumentException("Неможливо додати державну нагороду");
+            }
+        }
+
         return !(database.rowWithKpiYearExists(name, faculty, kpiDiplomaYear) ||
                 database.rowWithStateYearExists(name, faculty, stateDiplomaYear) ||
                 database.rowExists(name, faculty, kpiDiploma, stateDiploma, protocolNum, kpiDiplomaYear, stateDiplomaYear));
     }
 
-    private void addAndAlert(RowDTO newRow) {
+    private void addAndAlert(RowDTO newRow) throws IllegalArgumentException {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Додаваня в базу данних");
 
@@ -331,7 +351,6 @@ public class ScenesController implements Initializable {
             addRowToTable(newRow);
             alert.setHeaderText("Додавання прошло успішно");
             alert.showAndWait();
-
         } else {
             alert.setHeaderText("Таке поле вже існує");
             alert.showAndWait();

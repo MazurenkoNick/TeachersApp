@@ -1,5 +1,7 @@
 package tarik.inc.teachersapp.dto;
 
+import java.util.Optional;
+
 public enum StateAward {
     NONE(" - "),
     PodyakaMON("Подяка МОН України"),
@@ -29,5 +31,12 @@ public enum StateAward {
 
     public String getName() {
         return this.name;
+    }
+
+    public Optional<StateAward> next() {
+        int nextId = this.ordinal() + 1;
+        if (nextId < allValues.length)
+            return Optional.of(allValues[nextId]);
+        return Optional.empty();
     }
 }
