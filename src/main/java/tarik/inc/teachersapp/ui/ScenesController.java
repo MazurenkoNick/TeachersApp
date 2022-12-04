@@ -312,8 +312,15 @@ public class ScenesController implements Initializable {
         else if (!kpiDiplomaYear.equals(Year.of(0)) && kpiDiploma.equals(KPIAward.NONE))
             throw new IllegalArgumentException("Нагорода КПІ має бути обраною");
         else if (!stateDiplomaYear.equals(Year.of(0)) && stateDiploma.equals(StateAward.NONE) ||
-                protocolNum.isBlank() && !stateDiploma.equals(StateAward.NONE))
-            throw new IllegalArgumentException("Державна нагорода або/i протокол мають бути обраними");
+                 !protocolNum.isBlank() && stateDiploma.equals(StateAward.NONE))
+            throw new IllegalArgumentException("Державна нагорода має бути обраною");
+        else if (protocolNum.isBlank() && !stateDiploma.equals(StateAward.NONE))
+            throw new IllegalArgumentException("Протокол має бути обраним");
+        else if (kpiDiplomaYear.equals(Year.of(0)) && !kpiDiploma.equals(KPIAward.NONE))
+            throw new IllegalArgumentException("Рік КПІ нагороди має бути обраним");
+        else if (stateDiplomaYear.equals(Year.of(0)) && !stateDiploma.equals(StateAward.NONE))
+            throw new IllegalArgumentException("Рік державної нагороди має бути обраним");
+
 
         RowDTO rowWithPrevKpiAwardYear = database.findRowWithPreviousKpiYear(name, faculty,
                 kpiDiplomaYear.minusYears(1));
@@ -321,7 +328,7 @@ public class ScenesController implements Initializable {
         if (!rowWithPrevKpiAwardYear.equals(RowDTO.EMPTY)) {
             KPIAward prognosticationKpiAward = rowWithPrevKpiAwardYear.getPrognostication();
             if (!prognosticationKpiAward.equals(KPIAward.NONE) && !prognosticationKpiAward.equals(kpiDiploma))    {
-                throw new IllegalArgumentException("Неможливо додати КПІ нагороду");
+                throw new IllegalArgumentException("Неможливо додати КПІ нагороду такого типу");
             }
         }
 
@@ -331,7 +338,7 @@ public class ScenesController implements Initializable {
         if (!rowWithPrevStateAwardYear.equals(RowDTO.EMPTY)) {
             StateAward prognosticationStateAward = rowWithPrevStateAwardYear.getStateDiploma().next().orElse(null);
             if (prognosticationStateAward != null && !prognosticationStateAward.equals(stateDiploma)) {
-                throw new IllegalArgumentException("Неможливо додати державну нагороду");
+                throw new IllegalArgumentException("Неможливо додати державну нагороду такого типу");
             }
         }
 
